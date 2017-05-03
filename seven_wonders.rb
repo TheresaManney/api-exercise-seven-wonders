@@ -1,14 +1,31 @@
 require 'httparty'
 
+class Seven_Wonders
+
+  BASE_URL =  "https://maps.googleapis.com/maps/api/geocode/json"
+  TOKEN = ENV["GOOGLE_API_KEY"]
+
+  def self.coordinates(name)
+    url = BASE_URL + "?address=#{name}&" + "token=#{TOKEN}"
+
+    response = HTTParty.get(url)
+
+    find_location = response["results"][0]["geometry"]["location"]
+
+    return find_location
+  end
+end
+
 #Starter Code:
 seven_wonders = ["Great Pyramind of Giza", "Hanging Gardens of Babylon", "Colossus of Rhodes", "Lighthouse of Alexandria", "Statue of Zeus at Olympia", "Temple of Artemis", "Mausoleum at Halicarnassus"]
 
+wonder_info = {}
 
+seven_wonders.each do |wonder|
+  wonder_info[wonder] = Seven_Wonders.coordinates(wonder)
+end
 
-
-
-
-
+puts wonder_info
 
 
 #Example Output:
